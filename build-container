@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -x
+
+ctrl=$(buildah from fedora:35)
+
+#buildah run "$ctrl" -- dnf update -y
+
+buildah add "$ctrl" wheels/ /root/wheels/
+buildah run "$ctrl" -- dnf install -y python3-pip
+buildah run "$ctrl" -- ls /root/wheels
+buildah run "$ctrl" -- sh -c 'pip3 install /root/wheels/*'
+buildah run "$ctrl" -- rm -rf '/root/wheels/*'
+
+buildah add "$ctrl" run /usr/local/bin/run
+buildah add "$ctrl" build/vat-data.json /usr/local/etc/vat-data.json
+
+buildah config --workingdir /usr/local/ "$ctrl"
+buildah config --cmd '/usr/local/bin/run' "$ctrl"
+buildah config --env USERNAME="test" --env PASSWORD="duty-changes" "$ctrl"
+buildah config --port 8080 "$ctrl"
+
+buildah commit "$ctrl" $1
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "Authentication enabled for user ${USERNAME}"
+
+echo "Starting..."
+
+/usr/local/bin/vat-test-service \
+    --data /usr/local/etc/vat-data.json \
+    -l '0.0.0.0:8080' \
+    --username ${USERNAME} --password ${PASSWORD}
+
