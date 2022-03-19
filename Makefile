@@ -1,5 +1,5 @@
 
-VERSION=0.0.2
+VERSION=0.0.3
 
 GIT_REPO=https://github.com/cybermaggedon/gnucash-uk-vat
 
@@ -15,7 +15,8 @@ containers: build-container wheels
 #	sudo buildah tag ${NAME}:${VERSION} ${CONTAINER}:${VERSION}
 #	docker build -f Containerfile \
 #	    -t ${CONTAINER}:${VERSION} .
-	podman build -f Containerfile -t ${CONTAINER}:${VERSION}
+	podman build -f Containerfile -t ${CONTAINER}:${VERSION} \
+	    --format docker
 
 build:
 	rm -rf build/ && mkdir build/
@@ -31,12 +32,11 @@ login:
 	        europe-west2-docker.pkg.dev
 
 push:
-	podman push ${CONTAINER}:${VERSION}
+	podman push --remove-signatures ${CONTAINER}:${VERSION}
 
 start:
 	podman run -d --name vat-test-service \
 	    -p 8080/tcp --expose=8080 \
-	    --ip=10.88.1.1 \
 	    --env USERNAME=test --env PASSWORD=test \
 	    ${CONTAINER}:${VERSION}
 
@@ -44,5 +44,5 @@ clean:
 	rm -rf build/ wheels/
 
 stop:
-	sudo podman rm -f vat-test-service
+	podman rm -f vat-test-service
 
