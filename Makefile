@@ -1,5 +1,5 @@
 
-VERSION=0.0.3
+VERSION=0.0.4
 
 GIT_REPO=https://github.com/cybermaggedon/gnucash-uk-vat
 
@@ -10,7 +10,7 @@ NAME=vat-test-service
 REPO=europe-west2-docker.pkg.dev/accounts-machine-dev/accounts-machine
 CONTAINER=${REPO}/vat-test-service
 
-containers: build-container wheels
+container: build-container wheels
 #	sudo env BUILDAH_FORMAT=docker ./build-container ${NAME}:${VERSION}
 #	sudo buildah tag ${NAME}:${VERSION} ${CONTAINER}:${VERSION}
 #	docker build -f Containerfile \
