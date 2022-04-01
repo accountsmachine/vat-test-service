@@ -1,5 +1,6 @@
 
-VERSION=0.0.4
+GIT_VERSION=v1.4.2
+VERSION=0.0.8
 
 GIT_REPO=https://github.com/cybermaggedon/gnucash-uk-vat
 
@@ -10,7 +11,7 @@ NAME=vat-test-service
 REPO=europe-west2-docker.pkg.dev/accounts-machine-dev/accounts-machine
 CONTAINER=${REPO}/vat-test-service
 
-container: build-container wheels
+container: build wheels
 #	sudo env BUILDAH_FORMAT=docker ./build-container ${NAME}:${VERSION}
 #	sudo buildah tag ${NAME}:${VERSION} ${CONTAINER}:${VERSION}
 #	docker build -f Containerfile \
@@ -20,7 +21,9 @@ container: build-container wheels
 
 build:
 	rm -rf build/ && mkdir build/
-	git clone ${GIT_REPO} build/
+	git clone ${GIT_REPO} build/ && \
+	    (cd build/; git checkout ${GIT_VERSION})
+
 
 wheels:
 	rm -rf wheels/ && mkdir wheels/
@@ -45,4 +48,13 @@ clean:
 
 stop:
 	podman rm -f vat-test-service
+
+SERVICE=vat-test-service
+PROJECT=accounts-machine-dev
+REGION=europe-west1
+
+deploy:
+	gcloud run services update ${SERVICE} \
+	    --project ${PROJECT} --region ${REGION} \
+	    --image ${CONTAINER}:${VERSION}
 
