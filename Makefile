@@ -1,6 +1,6 @@
 
-GIT_VERSION=v1.4.2
-VERSION=0.9.0
+GIT_VERSION=3ab26482
+VERSION=0.9.2
 
 GIT_REPO=https://github.com/cybermaggedon/gnucash-uk-vat
 
