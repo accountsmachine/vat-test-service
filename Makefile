@@ -1,10 +1,10 @@
 
 GIT_VERSION=v1.4.2
-VERSION=0.0.8
+VERSION=0.9.0
 
 GIT_REPO=https://github.com/cybermaggedon/gnucash-uk-vat
 
-all:
+all: wheels
 
 NAME=vat-test-service
 
@@ -25,7 +25,7 @@ build:
 	    (cd build/; git checkout ${GIT_VERSION})
 
 
-wheels:
+wheels: build
 	rm -rf wheels/ && mkdir wheels/
 	(cd build && pip3 wheel -w ../wheels .)
 
@@ -52,9 +52,11 @@ stop:
 SERVICE=vat-test-service
 PROJECT=accounts-machine-dev
 REGION=europe-west1
+TAG=v$(subst .,-,${VERSION})
 
 deploy:
 	gcloud run services update ${SERVICE} \
 	    --project ${PROJECT} --region ${REGION} \
-	    --image ${CONTAINER}:${VERSION}
+	    --image ${CONTAINER}:${VERSION} \
+	    --tag ${TAG}
 
