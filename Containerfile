@@ -1,7 +1,11 @@
 
-FROM fedora:35
+FROM fedora:36
 
 ENV USERNAME=test
+
+# This is a test service, it's OK for everyone to know the password,
+# it's not protecting anything, just allowing client to test the
+# auth flows
 ENV PASSWORD=duty-changes
 
 RUN dnf update -y && dnf install -y python3-pip && dnf clean all
