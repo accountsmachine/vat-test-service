@@ -42,9 +42,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha
 
-      - name: Build Angular app
-        run: make build BUILD=dev
-
       - name: Build container
         uses: docker/build-push-action@v3
         with:
