@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - master
 
 permissions:
   contents: read
@@ -27,11 +27,8 @@ jobs:
         id: version
         run: echo VERSION=sha-$(git rev-parse --short HEAD) >> $GITHUB_OUTPUT
 
-      - name: Setup for Angular
-        run: npm install --force
-
-      - name: Install Angular cli
-        run: npm install -g @angular/cli
+      - name: Build
+        run: make wheels
 
       - name: Extract metadata for container
         id: meta

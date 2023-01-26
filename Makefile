@@ -27,7 +27,7 @@ build:
 
 wheels: build
 	rm -rf wheels/ && mkdir wheels/
-	(cd build && pip3 wheel -w ../wheels .)
+	(pip3 wheel -w ./wheels gnucash-uk-vat)
 
 login:
 	gcloud auth print-access-token | \
